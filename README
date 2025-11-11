@@ -1,1 +1,7 @@
-beer label creator
+# Beer Label Generator
+
+This project provides a printable HTML5 beer label generator. Enter the beer style and packaged date to populate 18 labels (3 across × 6 down) that fit neatly on an A4 sheet. Print the page using your browser's print dialog.
+
+## Getting started
+
+Open `index.html` in any modern browser. Fill in the form and click **Print** when you're ready to produce a sheet of labels.
