@@ -34,13 +34,15 @@
       <p class="controls__hint">Tip: Labels automatically update as you type. Use the Print button once you're happy with the preview.</p>
     </section>
 
-    <section class="sheet" aria-label="Label sheet preview (front)">
-      <div id="labels" class="labels" aria-live="polite"></div>
-    </section>
+    <div class="sheets-container">
+      <section class="sheet" aria-label="Label sheet preview (front)">
+        <div id="labels" class="labels" aria-live="polite"></div>
+      </section>
 
-    <section class="sheet sheet--back" aria-label="Label sheet preview (back)" style="display: none;">
-      <div id="labels-back" class="labels labels--back" aria-live="polite"></div>
-    </section>
+      <section class="sheet sheet--back" aria-label="Label sheet preview (back)" style="display: none;">
+        <div id="labels-back" class="labels labels--back" aria-live="polite"></div>
+      </section>
+    </div>
   </main>
 
   <script type="module">
