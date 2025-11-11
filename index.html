@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Beer Label Generator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="layout">
+    <section class="controls" aria-labelledby="form-title">
+      <h1 id="form-title">Beer Label Generator</h1>
+      <p class="controls__intro">
+        Enter the beer style and packaged date below, then print the page to create 18 labels per A4 sheet.
+      </p>
+      <form id="label-form">
+        <div class="field">
+          <label for="style">Style</label>
+          <input id="style" name="style" type="text" placeholder="e.g. Hazy IPA" required />
+        </div>
+        <div class="field">
+          <label for="packaged">Packaged on</label>
+          <input id="packaged" name="packaged" type="date" />
+        </div>
+        <div class="actions">
+          <button type="submit">Update labels</button>
+          <button type="button" id="print">Print</button>
+        </div>
+      </form>
+      <p class="controls__hint">Tip: Labels automatically update as you type. Use the Print button once you're happy with the preview.</p>
+    </section>
+
+    <section class="sheet" aria-label="Label sheet preview">
+      <div id="labels" class="labels" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <script src="script.js" type="module"></script>
+</body>
+</html>
