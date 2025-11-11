@@ -229,8 +229,11 @@ button:focus-visible:not(:disabled) {
   word-wrap: break-word;
   overflow: hidden;
   height: 100%;
-  color: #778595;
   font-family: cursive;
+  width: 181px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
 }
 
 
