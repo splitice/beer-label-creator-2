@@ -23,8 +23,7 @@
           <input id="packaged" name="packaged" type="date" />
         </div>
         <div class="actions">
-          <button type="submit">Update labels</button>
-          <button type="button" id="print">Print</button>
+          <button type="button" id="print">Print Front</button>
         </div>
       </form>
       <p class="controls__hint">Tip: Labels automatically update as you type. Use the Print button once you're happy with the preview.</p>
@@ -43,6 +42,8 @@
     const packagedInput = document.getElementById('packaged');
     const labelsContainer = document.getElementById('labels');
     const printButton = document.getElementById('print');
+
+    packagedInput.value = new Date().toISOString().split('T')[0];
 
     function formatDate(value) {
       if (!value) {
@@ -66,10 +67,6 @@
       const wrapper = document.createElement('div');
       wrapper.className = `label__line label__line--${modifier}`;
 
-      const labelText = document.createElement('span');
-      labelText.className = 'label__line-label';
-      labelText.textContent = label;
-
       const valueText = document.createElement('span');
       valueText.className = 'label__line-value';
 
@@ -80,7 +77,7 @@
         valueText.innerHTML = '&nbsp;';
       }
 
-      wrapper.append(labelText, valueText);
+      wrapper.append(valueText);
       return wrapper;
     }
 
@@ -96,26 +93,8 @@
         label.setAttribute('role', 'group');
         label.setAttribute('aria-label', `Label ${index + 1}`);
 
-        const header = document.createElement('header');
-        header.className = 'label__header';
-
-        const logo = document.createElement('div');
-        logo.className = 'label__logo';
-        logo.setAttribute('aria-hidden', 'true');
-
-        const brand = document.createElement('div');
-        brand.className = 'label__brand';
-
-        const brandName = document.createElement('span');
-        brandName.className = 'label__brand-name';
-        brandName.textContent = 'Heards Holy Water';
-
-        const brandMeta = document.createElement('span');
-        brandMeta.className = 'label__brand-meta';
-        brandMeta.textContent = 'est. 1992';
-
-        brand.append(brandName, brandMeta);
-        header.append(logo, brand);
+        // set background image for label
+        label.style.backgroundImage = 'url("assets/front.png")';
 
         const lines = document.createElement('div');
         lines.className = 'label__lines';
@@ -125,7 +104,7 @@
 
         lines.append(styleLine, packagedLine);
 
-        label.append(header, lines);
+        label.append(lines);
         labelsContainer.append(label);
       }
     }
