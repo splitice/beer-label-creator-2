@@ -122,6 +122,14 @@ button:focus-visible:not(:disabled) {
   padding: 1rem;
 }
 
+.sheets-container {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+
 .labels {
   width: var(--sheet-width);
   background: white;
