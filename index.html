@@ -22,15 +22,24 @@
           <label for="packaged">Packaged on</label>
           <input id="packaged" name="packaged" type="date" />
         </div>
+        <div class="field">
+          <label for="notes">Notes (optional)</label>
+          <textarea id="notes" name="notes" rows="4" placeholder="Enter notes for the back side of labels..."></textarea>
+        </div>
         <div class="actions">
           <button type="button" id="print">Print Front</button>
+          <button type="button" id="print-back" disabled>Print Back</button>
         </div>
       </form>
       <p class="controls__hint">Tip: Labels automatically update as you type. Use the Print button once you're happy with the preview.</p>
     </section>
 
-    <section class="sheet" aria-label="Label sheet preview">
+    <section class="sheet" aria-label="Label sheet preview (front)">
       <div id="labels" class="labels" aria-live="polite"></div>
+    </section>
+
+    <section class="sheet sheet--back" aria-label="Label sheet preview (back)" style="display: none;">
+      <div id="labels-back" class="labels labels--back" aria-live="polite"></div>
     </section>
   </main>
 
@@ -40,8 +49,12 @@
     const form = document.getElementById('label-form');
     const styleInput = document.getElementById('style');
     const packagedInput = document.getElementById('packaged');
+    const notesInput = document.getElementById('notes');
     const labelsContainer = document.getElementById('labels');
+    const labelsBackContainer = document.getElementById('labels-back');
     const printButton = document.getElementById('print');
+    const printBackButton = document.getElementById('print-back');
+    const backSheet = document.querySelector('.sheet--back');
 
     packagedInput.value = new Date().toISOString().split('T')[0];
 
@@ -109,23 +122,88 @@
       }
     }
 
+    function createBackLabelElements(notesValue) {
+      labelsBackContainer.innerHTML = '';
+
+      const notesText = notesValue || '';
+
+      for (let index = 0; index < LABEL_COUNT; index += 1) {
+        const label = document.createElement('article');
+        label.className = 'label label--back';
+        label.setAttribute('role', 'group');
+        label.setAttribute('aria-label', `Back Label ${index + 1}`);
+
+        // set background image for back label
+        label.style.backgroundImage = 'url("assets/back.png")';
+
+        const notesContainer = document.createElement('div');
+        notesContainer.className = 'label__notes';
+
+        if (notesText) {
+          notesContainer.textContent = notesText;
+        } else {
+          notesContainer.innerHTML = '&nbsp;';
+        }
+
+        label.append(notesContainer);
+        labelsBackContainer.append(label);
+      }
+    }
+
     function handleSubmit(event) {
       event.preventDefault();
       createLabelElements(styleInput.value.trim(), packagedInput.value.trim());
+      updateBackLabels();
     }
 
     function handleInputChange() {
       createLabelElements(styleInput.value.trim(), packagedInput.value.trim());
+      updateBackLabels();
+    }
+
+    function updateBackLabels() {
+      const notesValue = notesInput.value.trim();
+      
+      // Enable/disable Print Back button based on notes content
+      printBackButton.disabled = !notesValue;
+      
+      // Show/hide back sheet based on notes content
+      if (notesValue) {
+        backSheet.style.display = '';
+        createBackLabelElements(notesValue);
+      } else {
+        backSheet.style.display = 'none';
+      }
     }
 
     form.addEventListener('submit', handleSubmit);
     form.addEventListener('input', handleInputChange);
 
     printButton.addEventListener('click', () => {
+      // Hide back sheet when printing front only
+      const wasBackVisible = backSheet.style.display !== 'none';
+      backSheet.style.display = 'none';
       window.print();
+      if (wasBackVisible) {
+        backSheet.style.display = '';
+      }
+    });
+
+    printBackButton.addEventListener('click', () => {
+      // Hide front sheet when printing back only
+      const frontSheet = document.querySelector('.sheet:not(.sheet--back)');
+      const wasFrontVisible = frontSheet.style.display !== 'none';
+      frontSheet.style.display = 'none';
+      backSheet.style.display = '';
+      window.print();
+      frontSheet.style.display = '';
+      if (!notesInput.value.trim()) {
+        backSheet.style.display = 'none';
+      }
     });
 
     createLabelElements('', '');
+    updateBackLabels();
   </script>
 </body>
 </html>
